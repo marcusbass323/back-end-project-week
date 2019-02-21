@@ -2,12 +2,12 @@ const express = require('express');
 const knex = require('knex');
 const dbConfig = require('./knexfile');
 const db = knex(dbConfig.development);
-
+const cors = require('cors');
 const server = express();
 const PORT = 5000;
 
 server.use(express.json());
-
+server.use(cors());
 
 //GET ENDPOINT
 server.get('/', (req, res) => {
@@ -63,7 +63,7 @@ server.delete('/notes/:id', (req, res) => {
     const note = req.body;
     db('notes').where('id', id).delete(note)
         .then(rowCount => {
-            res.json(notes);
+            res.json({message: "deleted"});
         }).catch(err => {
         res.status(201).json({err: 'Failed to delete note'})
     })
